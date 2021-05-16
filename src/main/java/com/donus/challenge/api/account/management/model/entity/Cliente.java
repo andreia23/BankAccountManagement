@@ -2,16 +2,20 @@ package com.donus.challenge.api.account.management.model.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author andreia
  *
  */
 @Entity
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"cpf"})})
 public class Cliente implements Serializable {
 
 	/**
@@ -22,6 +26,8 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idCliente;
 	private String nomeCompleto;
+	
+	@Column
 	private String cpf;
 
 	public Cliente() {

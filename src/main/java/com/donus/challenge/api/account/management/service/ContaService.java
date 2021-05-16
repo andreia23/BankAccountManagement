@@ -1,5 +1,7 @@
 package com.donus.challenge.api.account.management.service;
 
+import java.util.Date;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,28 +14,32 @@ import com.donus.challenge.api.account.management.repository.ContaRepository;
 @Service
 public class ContaService {
 
-	@Autowired
 	private ContaRepository contaRepository;
+
+	@Autowired
+	public ContaService(ContaRepository contaRepository) {
+		this.contaRepository = contaRepository;
+	}
 
 	public Conta saveConta(Conta conta) {
 		return contaRepository.save(conta);
 	}
-	
-	public ContaDTO insert(ContaDTO user) {
-		
-//		user.setId(UUID.randomUUID().toString());
-		
+
+	public ContaDTO saveAccount(ContaDTO contaDTO) {
+
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
-		Conta userEntity = modelMapper.map(user, Conta.class);
+		Date now = new Date();		
+		contaDTO.setDate(now);
+		Conta contaEntity = modelMapper.map(contaDTO, Conta.class);
 		
-		contaRepository.save(userEntity);
-		
-		ContaDTO returnValue = modelMapper.map(userEntity, ContaDTO.class);
-		
+		contaRepository.save(contaEntity);
+
+		ContaDTO returnValue = modelMapper.map(contaEntity, ContaDTO.class);
+
 		return returnValue;
-		
+
 	}
 
 }

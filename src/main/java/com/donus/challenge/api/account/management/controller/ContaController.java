@@ -11,16 +11,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.donus.challenge.api.account.management.model.dto.ClienteDTO;
 import com.donus.challenge.api.account.management.model.dto.ContaDTO;
+import com.donus.challenge.api.account.management.model.entity.Cliente;
+import com.donus.challenge.api.account.management.service.ClienteService;
 import com.donus.challenge.api.account.management.service.ContaService;
 
 //@Api(value="API REST Produtos")
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/conta")
 public class ContaController {
 
-	@Autowired
 	private ContaService contaService;
+	private ClienteService clienteService;
+
+	@Autowired
+	public ContaController(ContaService contaService, ClienteService clienteService) {
+		this.contaService = contaService;
+		this.clienteService = clienteService;
+	}
 
 //	@ApiOperation(value = "Salva uma conta")
 //	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
@@ -29,14 +38,18 @@ public class ContaController {
 //
 //	}
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<ContaDTO> insert( @RequestBody ContaDTO conta) {
-				
+	public ResponseEntity<ContaDTO> openAccount(@RequestBody ContaDTO conta) {
+
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		
+		ClienteDTO clienteDTO = modelMapper.map(conta.getCliente(), ClienteDTO.class);
+		ContaDTO contaDTO = modelMapper.map(conta, ContaDTO.class);
+		clienteDTO = clienteService.saveClient(clienteDTO);
+		Cliente clienteEntity = modelMapper.map(clienteDTO, Cliente.class);
+		contaDTO.setCliente(clienteEntity);
+		contaDTO = contaService.saveAccount(contaDTO);
 
-		ContaDTO userDTO = modelMapper.map(conta, ContaDTO.class);
-		userDTO = contaService.insert(userDTO);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
 	}
 }

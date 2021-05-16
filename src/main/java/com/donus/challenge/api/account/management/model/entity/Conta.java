@@ -8,10 +8,13 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -32,6 +35,9 @@ public class Conta implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idConta;
+	
+	@OneToOne
+	@JoinColumn(name="id_cliente", foreignKey = @ForeignKey(name="FK_CLIENTE"))
 	private Cliente cliente;
 	
 	@DateTimeFormat(pattern="dd/MM/yyyy")
@@ -186,7 +192,7 @@ public class Conta implements Serializable {
 			return false;
 		return true;
 	}
-	 
+	
 	
 
 }
