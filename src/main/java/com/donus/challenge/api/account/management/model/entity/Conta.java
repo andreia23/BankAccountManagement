@@ -6,10 +6,16 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @author andreia
@@ -26,10 +32,15 @@ public class Conta implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idConta;
-//	private Cliente cliente;
-//	private Date date;
+	private Cliente cliente;
+	
+	@DateTimeFormat(pattern="dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
+	private Date date;
 	private BigDecimal saldo;
-//	private Set<Transacao> transacoes = new HashSet<Transacao>();
+	
+	@OneToMany (mappedBy = "conta", cascade = {CascadeType.ALL})
+	private Set<Transacao> transacoes = new HashSet<Transacao>();
 	private boolean ativa;
 
 //	public BigDecimal getSaldo() {
@@ -57,30 +68,30 @@ public class Conta implements Serializable {
 	/**
 	 * @return the cliente
 	 */
-//	public Cliente getCliente() {
-//		return cliente;
-//	}
-//
-//	/**
-//	 * @param cliente the cliente to set
-//	 */
-//	public void setCliente(Cliente cliente) {
-//		this.cliente = cliente;
-//	}
+	public Cliente getCliente() {
+		return cliente;
+	}
 
-//	/**
-//	 * @return the date
-//	 */
-//	public Date getDate() {
-//		return date;
-//	}
-//
-//	/**
-//	 * @param date the date to set
-//	 */
-//	public void setDate(Date date) {
-//		this.date = date;
-//	}
+	/**
+	 * @param cliente the cliente to set
+	 */
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	/**
+	 * @return the date
+	 */
+	public Date getDate() {
+		return date;
+	}
+
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
 	/**
 	 * @return the saldo
@@ -99,16 +110,16 @@ public class Conta implements Serializable {
 	/**
 	 * @return the transacoes
 	 */
-//	public Set<Transacao> getTransacoes() {
-//		return transacoes;
-//	}
-//
-//	/**
-//	 * @param transacoes the transacoes to set
-//	 */
-//	public void setTransacoes(Set<Transacao> transacoes) {
-//		this.transacoes = transacoes;
-//	}
+	public Set<Transacao> getTransacoes() {
+		return transacoes;
+	}
+
+	/**
+	 * @param transacoes the transacoes to set
+	 */
+	public void setTransacoes(Set<Transacao> transacoes) {
+		this.transacoes = transacoes;
+	}
 
 	/**
 	 * @return the ativa
@@ -129,11 +140,11 @@ public class Conta implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (ativa ? 1231 : 1237);
-//		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
-//		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((idConta == null) ? 0 : idConta.hashCode());
 		result = prime * result + ((saldo == null) ? 0 : saldo.hashCode());
-//		result = prime * result + ((transacoes == null) ? 0 : transacoes.hashCode());
+		result = prime * result + ((transacoes == null) ? 0 : transacoes.hashCode());
 		return result;
 	}
 
@@ -148,16 +159,16 @@ public class Conta implements Serializable {
 		Conta other = (Conta) obj;
 		if (ativa != other.ativa)
 			return false;
-//		if (cliente == null) {
-//			if (other.cliente != null)
-//				return false;
-//		} else if (!cliente.equals(other.cliente))
-//			return false;
-//		if (date == null) {
-//			if (other.date != null)
-//				return false;
-//		} else if (!date.equals(other.date))
-//			return false;
+		if (cliente == null) {
+			if (other.cliente != null)
+				return false;
+		} else if (!cliente.equals(other.cliente))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
 		if (idConta == null) {
 			if (other.idConta != null)
 				return false;
@@ -168,11 +179,11 @@ public class Conta implements Serializable {
 				return false;
 		} else if (!saldo.equals(other.saldo))
 			return false;
-//		if (transacoes == null) {
-//			if (other.transacoes != null)
-//				return false;
-//		} else if (!transacoes.equals(other.transacoes))
-//			return false;
+		if (transacoes == null) {
+			if (other.transacoes != null)
+				return false;
+		} else if (!transacoes.equals(other.transacoes))
+			return false;
 		return true;
 	}
 	 

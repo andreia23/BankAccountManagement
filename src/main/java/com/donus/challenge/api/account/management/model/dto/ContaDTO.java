@@ -35,10 +35,10 @@ public class ContaDTO implements Serializable {
 	public ContaDTO(Conta conta) {
 		super();
 		idConta = conta.getIdConta();
-//		cliente = conta.getCliente();
-//		date = conta.getDate();
+		cliente = conta.getCliente();
+		date = conta.getDate();
 		saldo = conta.getSaldo();
-//		transacoes = conta.getTransacoes();
+		transacoes = conta.getTransacoes();
 
 	}
 
