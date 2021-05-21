@@ -2,11 +2,15 @@ package com.donus.challenge.api.account.management.model.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -29,18 +33,11 @@ public class Cliente implements Serializable {
 	
 	@Column
 	private String cpf;
-
-	public Cliente() {
-		super();
-	}
-
-	public Cliente(String nomeCompleto, String cpf) {
-		super();
-		this.nomeCompleto = nomeCompleto;
-		this.cpf = cpf;
-	}
-
 	
+//	@OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "conta_corrente_id")
+//    private Conta conta;
+//	
 	/**
 	 * @return the idCliente
 	 */

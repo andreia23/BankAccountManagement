@@ -15,7 +15,7 @@ public class ClienteDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Integer idCliente;
+//	private Integer idCliente;
 	private String nomeCompleto;
 	private String cpf;
 
@@ -24,24 +24,24 @@ public class ClienteDTO implements Serializable {
 	}
 
 	public ClienteDTO(Cliente cliente) {
-		idCliente = cliente.getIdCliente();
+//		idCliente = cliente.getIdCliente();
 		nomeCompleto = cliente.getNomeCompleto();
 		cpf = cliente.getCpf();
 	}
 
-	/**
-	 * @return the idCliente
-	 */
-	public Integer getIdCliente() {
-		return idCliente;
-	}
-
-	/**
-	 * @param idCliente the idCliente to set
-	 */
-	public void setIdCliente(Integer idCliente) {
-		this.idCliente = idCliente;
-	}
+//	/**
+//	 * @return the idCliente
+//	 */
+//	public Integer getIdCliente() {
+//		return idCliente;
+//	}
+//
+//	/**
+//	 * @param idCliente the idCliente to set
+//	 */
+//	public void setIdCliente(Integer idCliente) {
+//		this.idCliente = idCliente;
+//	}
 
 	/**
 	 * @return the nomeCompleto

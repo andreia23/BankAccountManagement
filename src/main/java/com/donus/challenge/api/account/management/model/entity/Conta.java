@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -15,8 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,28 +28,34 @@ import org.springframework.format.annotation.DateTimeFormat;
  *
  */
 @Entity
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "numero_conta" }) })
 public class Conta implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idConta;
-	
-	@OneToOne
-	@JoinColumn(name="id_cliente", foreignKey = @ForeignKey(name="FK_CLIENTE"))
+
+	@Column(name = "numero_conta")
+	private String numero;
+
+	@OneToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "id_cliente", foreignKey = @ForeignKey(name = "FK_CLIENTE"))
 	private Cliente cliente;
-	
-	@DateTimeFormat(pattern="dd/MM/yyyy")
+
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date date;
+
 	private BigDecimal saldo;
-	
-	@OneToMany (mappedBy = "conta", cascade = {CascadeType.ALL})
+
+	@OneToMany(mappedBy = "conta", cascade = { CascadeType.ALL })
 	private Set<Transacao> transacoes = new HashSet<Transacao>();
+
 	private boolean ativa;
 
 //	public BigDecimal getSaldo() {
@@ -56,6 +65,10 @@ public class Conta implements Serializable {
 //		}
 //		return total;
 //	}
+
+	public Conta() {
+		super();
+	}
 
 	/**
 	 * @return the idConta
@@ -69,6 +82,20 @@ public class Conta implements Serializable {
 	 */
 	public void setIdConta(Integer idConta) {
 		this.idConta = idConta;
+	}
+
+	/**
+	 * @return the numero
+	 */
+	public String getNumero() {
+		return numero;
+	}
+
+	/**
+	 * @param numero the numero to set
+	 */
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	/**
@@ -192,7 +219,5 @@ public class Conta implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }
