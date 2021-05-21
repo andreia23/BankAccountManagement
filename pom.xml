@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.donus.challenge.api.account.management</groupId>
 	<artifactId>BankAccountManagement</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>BankAccountManagement</name>
 	<description>API REST para gerenciamento de contas bancárias</description>
 	<properties>

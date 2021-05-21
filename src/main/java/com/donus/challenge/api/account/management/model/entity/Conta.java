@@ -51,7 +51,7 @@ public class Conta implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
-	private BigDecimal saldo;
+	private BigDecimal saldo = new BigDecimal(0);
 
 	@OneToMany(mappedBy = "conta", cascade = { CascadeType.ALL })
 	private Set<Transacao> transacoes = new HashSet<Transacao>();

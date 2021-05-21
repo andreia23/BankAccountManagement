@@ -58,8 +58,8 @@ public class ContaController {
 	@RequestMapping(value = "/open-account", method = RequestMethod.POST)
 	public ResponseEntity<ContaDTO> abrirConta(@RequestBody ClienteDTO cliente) {
 
-		if (!DataValidator.isCPF(cliente.getCpf()))
-			return new ResponseEntity<ContaDTO>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
+//		if (!DataValidator.isCPF(cliente.getCpf()))
+//			return new ResponseEntity<ContaDTO>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
 
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -70,8 +70,6 @@ public class ContaController {
 		Cliente clienteEntity = modelMapper.map(cliente, Cliente.class);
 		contaDTO.setCliente(clienteEntity);
 		contaDTO.setAtiva(true);
-		BigDecimal big1 = new BigDecimal(0.0);
-		contaDTO.setSaldo(big1);
 		contaDTO = contaService.saveAccount(contaDTO);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
