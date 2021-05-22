@@ -33,55 +33,56 @@ public class TransacaoService {
 		this.transacaoRepository = transacaoRepository;
 		this.contaRepository = contaRepository;
 	}
-
-	/**
-	 * @param transacaoDTO
-	 */
-	@Transactional
-	public void createTransaction(TransacaoDTO transacaoDTO) {
-
-		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
-		Date now = new Date();
-		transacaoDTO.setDate(now);
-
-		Transacao transacao = modelMapper.map(transacaoDTO, Transacao.class);
-
-		if (!contaRepository.isAccountExists(transacao.getSourceNumber())) {
-			throw new AccountNotFoundException("Conta de origem não encontrada");
-		}
-		
-		if (!contaRepository.isAccountExists(transacao.getDestinationNumber())) {
-			throw new AccountNotFoundException("Conta de destino não encontrada");
-		}
-		
-		Conta sourceAccount = contaRepository.findByNumberAccount(transacao.getSourceNumber());
-		
-		if (sourceAccount.getSaldo().compareTo(transacao.getValor()) < 0) {
-			throw new NotEnoughMoneyException("Saldo insuficiente para transação");
-		}
-		
-		BigDecimal sourceAccountSum = sourceAccount.getSaldo().subtract(transacao.getValor());
-		sourceAccount.setSaldo(sourceAccountSum);
-//		sourceAccount.adicionar(transacao);
-//		addTransacao(sourceAccount, transacao);
-		transacao.setConta(sourceAccount);
-		contaRepository.save(sourceAccount);
-		
-		Conta destinationAccount = contaRepository.findByNumberAccount(transacao.getDestinationNumber());
-		BigDecimal destinationAccountSum = destinationAccount.getSaldo().add(transacao.getValor());
-		destinationAccount.setSaldo(destinationAccountSum);
-		contaRepository.save(destinationAccount);
-		
-		transacaoRepository.save(transacao);
-		
-	}
 	
 	@Transactional
-	public void addTransacao(Conta conta, Transacao transacao) {
-		conta.adicionar(transacao);
-		
+	public Transacao saveTransacao(Transacao transacao) {
+		return transacaoRepository.save(transacao);
 	}
+	
+
+//	/**
+//	 * @param transacaoDTO
+//	 */
+//	@Transactional
+//	public void createTransaction(TransacaoDTO transacaoDTO) {
+//
+//		ModelMapper modelMapper = new ModelMapper();
+//		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//
+//		Date now = new Date();
+//		transacaoDTO.setDate(now);
+//
+//		Transacao transacao = modelMapper.map(transacaoDTO, Transacao.class);
+//
+//		if (!contaRepository.isAccountExists(transacao.getSourceNumber())) {
+//			throw new AccountNotFoundException("Conta de origem não encontrada");
+//		}
+//		
+//		if (!contaRepository.isAccountExists(transacao.getDestinationNumber())) {
+//			throw new AccountNotFoundException("Conta de destino não encontrada");
+//		}
+//		
+//		Conta sourceAccount = contaRepository.findByNumberAccount(transacao.getSourceNumber());
+//		
+//		if (sourceAccount.getSaldo().compareTo(transacao.getValor()) < 0) {
+//			throw new NotEnoughMoneyException("Saldo insuficiente para transação");
+//		}
+//		
+//		BigDecimal sourceAccountSum = sourceAccount.getSaldo().subtract(transacao.getValor());
+//		sourceAccount.setSaldo(sourceAccountSum);
+////		sourceAccount.adicionar(transacao);
+////		addTransacao(sourceAccount, transacao);
+//		transacao.setConta(sourceAccount);
+//		contaRepository.save(sourceAccount);
+//		
+//		Conta destinationAccount = contaRepository.findByNumberAccount(transacao.getDestinationNumber());
+//		BigDecimal destinationAccountSum = destinationAccount.getSaldo().add(transacao.getValor());
+//		destinationAccount.setSaldo(destinationAccountSum);
+//		contaRepository.save(destinationAccount);
+//		
+//		transacaoRepository.save(transacao);
+//		
+//	}
+	
 
 }

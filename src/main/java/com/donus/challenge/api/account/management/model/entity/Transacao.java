@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 
 /**
  * @author andreia
@@ -31,9 +32,9 @@ public class Transacao implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idTransacao;
 
-	private String sourceNumber;
+//	private String sourceNumber;
 
-	private String destinationNumber;
+//	private String destinationNumber;
 
 	private String descricao;
 	private BigDecimal valor;
@@ -60,33 +61,33 @@ public class Transacao implements Serializable {
 		this.idTransacao = idTransacao;
 	}
 
-	/**
-	 * @return the sourceNumber
-	 */
-	public String getSourceNumber() {
-		return sourceNumber;
-	}
+//	/**
+//	 * @return the sourceNumber
+//	 */
+//	public String getSourceNumber() {
+//		return sourceNumber;
+//	}
+//
+//	/**
+//	 * @param sourceNumber the sourceNumber to set
+//	 */
+//	public void setSourceNumber(String sourceNumber) {
+//		this.sourceNumber = sourceNumber;
+//	}
 
-	/**
-	 * @param sourceNumber the sourceNumber to set
-	 */
-	public void setSourceNumber(String sourceNumber) {
-		this.sourceNumber = sourceNumber;
-	}
-
-	/**
-	 * @return the destinationNumber
-	 */
-	public String getDestinationNumber() {
-		return destinationNumber;
-	}
-
-	/**
-	 * @param destinationNumber the destinationNumber to set
-	 */
-	public void setDestinationNumber(String destinationNumber) {
-		this.destinationNumber = destinationNumber;
-	}
+//	/**
+//	 * @return the destinationNumber
+//	 */
+//	public String getDestinationNumber() {
+//		return destinationNumber;
+//	}
+//
+//	/**
+//	 * @param destinationNumber the destinationNumber to set
+//	 */
+//	public void setDestinationNumber(String destinationNumber) {
+//		this.destinationNumber = destinationNumber;
+//	}
 
 	/**
 	 * @return the descricao

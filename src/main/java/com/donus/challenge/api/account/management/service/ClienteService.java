@@ -27,10 +27,10 @@ public class ClienteService {
 	@Transactional
 	public Cliente saveClient(ClienteDTO clienteDTO) {
 
+		if (!DataValidator.isCPF(clienteDTO.getCpf()))
+			throw new InvalidDataException("CPF inválido");
+		
 		try {
-
-			if (!DataValidator.isCPF(clienteDTO.getCpf()))
-				throw new InvalidDataException("CPF inválido");
 
 			ModelMapper modelMapper = new ModelMapper();
 			modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);

@@ -1,7 +1,6 @@
 package com.donus.challenge.api.account.management.model.request;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * @author andreia
@@ -9,9 +8,10 @@ import java.util.Date;
  */
 public class TransacaoRequest {
 
-	private String sourceNumber;
+//	private String sourceNumber;
 
-	private String destinationNumber;
+//	@NotNull(message = "First name cannot be null")
+//	private String destinationNumber;
 
 	private String descricao;
 
@@ -20,30 +20,30 @@ public class TransacaoRequest {
 	/**
 	 * @return the sourceNumber
 	 */
-	public String getSourceNumber() {
-		return sourceNumber;
-	}
-
-	/**
-	 * @param sourceNumber the sourceNumber to set
-	 */
-	public void setSourceNumber(String sourceNumber) {
-		this.sourceNumber = sourceNumber;
-	}
-
-	/**
-	 * @return the destinationNumber
-	 */
-	public String getDestinationNumber() {
-		return destinationNumber;
-	}
-
-	/**
-	 * @param destinationNumber the destinationNumber to set
-	 */
-	public void setDestinationNumber(String destinationNumber) {
-		this.destinationNumber = destinationNumber;
-	}
+//	public String getSourceNumber() {
+//		return sourceNumber;
+//	}
+//
+//	/**
+//	 * @param sourceNumber the sourceNumber to set
+//	 */
+//	public void setSourceNumber(String sourceNumber) {
+//		this.sourceNumber = sourceNumber;
+//	}
+//
+//	/**
+//	 * @return the destinationNumber
+//	 */
+//	public String getDestinationNumber() {
+//		return destinationNumber;
+//	}
+//
+//	/**
+//	 * @param destinationNumber the destinationNumber to set
+//	 */
+//	public void setDestinationNumber(String destinationNumber) {
+//		this.destinationNumber = destinationNumber;
+//	}
 
 	/**
 	 * @return the descricao

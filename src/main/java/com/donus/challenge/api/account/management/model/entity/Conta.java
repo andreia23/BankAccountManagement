@@ -3,8 +3,7 @@ package com.donus.challenge.api.account.management.model.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,7 +53,7 @@ public class Conta implements Serializable {
 	private BigDecimal saldo;
 
 	@OneToMany(mappedBy = "conta", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
-	private Set<Transacao> transacoes = new HashSet<Transacao>();
+	private List<Transacao> transacoes;
 
 	private boolean ativa;
 
@@ -143,14 +142,14 @@ public class Conta implements Serializable {
 	/**
 	 * @return the transacoes
 	 */
-	public Set<Transacao> getTransacoes() {
+	public List<Transacao> getTransacoes() {
 		return transacoes;
 	}
 
 	/**
 	 * @param transacoes the transacoes to set
 	 */
-	public void setTransacoes(Set<Transacao> transacoes) {
+	public void setTransacoes(List<Transacao> transacoes) {
 		this.transacoes = transacoes;
 	}
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.donus.challenge.api.account.management.model.entity.Cliente;
@@ -26,7 +27,7 @@ public class ContaDTO implements Serializable {
 	private String numero; 
 	private Date date;
 	private BigDecimal saldo;
-	private Set<Transacao> transacoes = new HashSet<Transacao>();
+	private List<Transacao> transacoes;
 	private boolean ativa;
 
 	public ContaDTO() {
@@ -117,14 +118,14 @@ public class ContaDTO implements Serializable {
 	/**
 	 * @return the transacoes
 	 */
-	public Set<Transacao> getTransacoes() {
+	public List<Transacao> getTransacoes() {
 		return transacoes;
 	}
 
 	/**
 	 * @param transacoes the transacoes to set
 	 */
-	public void setTransacoes(Set<Transacao> transacoes) {
+	public void setTransacoes(List<Transacao> transacoes) {
 		this.transacoes = transacoes;
 	}
 
