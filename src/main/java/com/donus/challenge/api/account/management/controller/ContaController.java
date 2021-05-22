@@ -35,10 +35,6 @@ public class ContaController {
 		this.clienteService = clienteService;
 	}
 
-	public ContaController() {
-		super();
-	}
-
 //	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
 //	public ResponseEntity<ContaDTO> openAccount(@RequestBody ContaDTO conta) {
 //
@@ -55,7 +51,7 @@ public class ContaController {
 //		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
 //	}
 
-	@RequestMapping(value = "/open-account", method = RequestMethod.POST)
+	@RequestMapping(value = "/v1/open-account", method = RequestMethod.POST)
 	public ResponseEntity<ContaDTO> abrirConta(@RequestBody ClienteDTO cliente) {
 
 //		if (!DataValidator.isCPF(cliente.getCpf()))
@@ -80,11 +76,9 @@ public class ContaController {
 	 * @param value
 	 * @return
 	 */
-	@RequestMapping(path = "/deposit", method = RequestMethod.PUT)
+	@RequestMapping(path = "/v1/deposit", method = RequestMethod.PUT)
 	public ResponseEntity<?> deposit(@RequestParam String number, @RequestParam BigDecimal value) {
 		return contaService.deposit(number, value);
 	}
-	
-
 
 }

@@ -51,9 +51,9 @@ public class Conta implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
-	private BigDecimal saldo = new BigDecimal(0);
+	private BigDecimal saldo = BigDecimal.ZERO;
 
-	@OneToMany(mappedBy = "conta", cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "conta", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
 	private Set<Transacao> transacoes = new HashSet<Transacao>();
 
 	private boolean ativa;
@@ -166,6 +166,11 @@ public class Conta implements Serializable {
 	 */
 	public void setAtiva(boolean ativa) {
 		this.ativa = ativa;
+	}
+	
+	public void adicionar(Transacao transacao) {
+		transacao.setConta(this);		
+		this.transacoes.add(transacao);
 	}
 
 	@Override
