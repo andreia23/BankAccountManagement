@@ -65,7 +65,7 @@ public class ContaController {
 //		cliente = clienteService.saveClient(cliente);
 		Cliente clienteEntity = modelMapper.map(cliente, Cliente.class);
 		contaDTO.setCliente(clienteEntity);
-		contaDTO.setAtiva(true);
+//		contaDTO.setAtiva(true);
 		contaDTO = contaService.saveAccount(contaDTO);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
@@ -78,7 +78,8 @@ public class ContaController {
 	 */
 	@RequestMapping(path = "/v1/deposit", method = RequestMethod.PUT)
 	public ResponseEntity<?> deposit(@RequestParam String number, @RequestParam BigDecimal value) {
-		return contaService.deposit(number, value);
+		contaService.deposit(number, value);
+		return new ResponseEntity<>("Deposito realizado com sucesso", HttpStatus.OK);
 	}
 
 }

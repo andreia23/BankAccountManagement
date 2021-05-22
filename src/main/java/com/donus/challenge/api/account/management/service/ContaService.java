@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.donus.challenge.api.account.management.exception.AccountNotFoundException;
+import com.donus.challenge.api.account.management.exception.InvalidDataException;
 import com.donus.challenge.api.account.management.model.dto.ContaDTO;
 import com.donus.challenge.api.account.management.model.entity.Conta;
 import com.donus.challenge.api.account.management.repository.ContaRepository;
@@ -57,23 +59,23 @@ public class ContaService {
 	 * @param number
 	 * @param value
 	 */
-	public ResponseEntity<?> deposit(String number, BigDecimal value) {
-		
-		try {
+	public void deposit(String number, BigDecimal value) {
+
+		if (!contaRepository.isAccountExists(number)) {
+			throw new AccountNotFoundException("Conta inexistente");
+		}
+
 		Conta conta = contaRepository.findByNumberAccount(number);
+
 		if (!conta.isAtiva()) {
-			return new ResponseEntity<>("Conta desativada", new HttpHeaders(), HttpStatus.BAD_REQUEST);
+			throw new InvalidDataException("Conta desativada");
 		}
 		if (!DataValidator.validateValue(value)) {
-			return new ResponseEntity<>("Valor inválido", new HttpHeaders(), HttpStatus.BAD_REQUEST);
+			throw new InvalidDataException("Valor inválido");
 		}
-		
-		}catch(NullPointerException e) {
-			return new ResponseEntity<>("Conta inexistente", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
+
 		contaRepository.updateBalance(number, value);
-		return new ResponseEntity<>("Deposito realizado com sucesso", HttpStatus.OK);
+
 	}
 
 }

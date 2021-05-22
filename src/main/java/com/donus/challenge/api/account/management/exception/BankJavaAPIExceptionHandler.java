@@ -46,7 +46,15 @@ public class BankJavaAPIExceptionHandler extends ResponseEntityExceptionHandler 
 
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 
-		return new ResponseEntity<>(errorDetails, HttpStatus.GONE);
+		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(value = InvalidDataException.class)
+	public final ResponseEntity<ErrorDetails> handleDataInvalidException(InvalidDataException ex,
+			WebRequest request) {
+
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+
+		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+	}
 }

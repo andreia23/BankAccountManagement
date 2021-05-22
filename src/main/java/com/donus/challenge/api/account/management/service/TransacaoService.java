@@ -61,8 +61,9 @@ public class TransacaoService {
 		
 		BigDecimal sourceAccountSum = sourceAccount.getSaldo().subtract(transacao.getValor());
 		sourceAccount.setSaldo(sourceAccountSum);
-//		this.addTransacao(sourceAccount, transacao);
-//		transacao.setConta(sourceAccount);
+//		sourceAccount.adicionar(transacao);
+//		addTransacao(sourceAccount, transacao);
+		transacao.setConta(sourceAccount);
 		contaRepository.save(sourceAccount);
 		
 		Conta destinationAccount = contaRepository.findByNumberAccount(transacao.getDestinationNumber());

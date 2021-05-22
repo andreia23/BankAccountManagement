@@ -29,18 +29,18 @@ public class TransacaoController {
 	public TransacaoController(TransacaoService transacaoService) {
 		this.transacaoService = transacaoService;
 	}
-	
+
 	@RequestMapping(value = "/v1/transfer", method = RequestMethod.POST)
 	public ResponseEntity<TransacaoDTO> transfer(@Valid @RequestBody TransacaoRequest transacaoRequest) {
-		
+
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 		TransacaoDTO transacaoDTO = modelMapper.map(transacaoRequest, TransacaoDTO.class);
-		
-        transacaoService.createTransaction(transacaoDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(transacaoDTO);
 
-    }
-	
+		transacaoService.createTransaction(transacaoDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(transacaoDTO);
+
+	}
+
 }
