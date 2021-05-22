@@ -51,17 +51,12 @@ public class ContaService {
 	 * @return
 	 */
 	@Transactional
-	public void saveAccountUser(ClienteDTO cliente, ContaDTO contaDTO) {
-
-		if (!DataValidator.isCPF(cliente.getCpf()))
-			throw new InvalidDataException("CPF inválido");
+	public void saveAccountUser(Cliente cliente, ContaDTO contaDTO) {
 
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-		Cliente clienteEntity = modelMapper.map(cliente, Cliente.class);
-		clienteRepository.save(clienteEntity);
-		contaDTO.setCliente(clienteEntity);
+		contaDTO.setCliente(cliente);
 		contaDTO.setAtiva(true);
 		contaDTO.setSaldo(BigDecimal.ZERO);
 

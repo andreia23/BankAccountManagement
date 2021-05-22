@@ -2,6 +2,8 @@ package com.donus.challenge.api.account.management.controller;
 
 import java.math.BigDecimal;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.donus.challenge.api.account.management.model.dto.ClienteDTO;
 import com.donus.challenge.api.account.management.model.dto.ContaDTO;
+import com.donus.challenge.api.account.management.model.entity.Cliente;
+import com.donus.challenge.api.account.management.service.ClienteService;
 import com.donus.challenge.api.account.management.service.ContaService;
 
 //@Api(value="API REST Produtos")
@@ -20,10 +24,13 @@ import com.donus.challenge.api.account.management.service.ContaService;
 public class ContaController {
 
 	private ContaService contaService;
+	
+	private ClienteService clienteService;
 
 	@Autowired
-	public ContaController(ContaService contaService) {
+	public ContaController(ContaService contaService, ClienteService clienteService) {
 		this.contaService = contaService;
+		this.clienteService = clienteService;
 	}
 
 //	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
@@ -47,9 +54,10 @@ public class ContaController {
 	 * @param contaDTO
 	 * @return
 	 */
-	@RequestMapping(value = "/v1/open-account-User", method = RequestMethod.POST)
-	public ResponseEntity<ContaDTO> openAccountUser(@RequestBody ClienteDTO cliente, ContaDTO contaDTO) {
-
+	@RequestMapping(value = "/v1/open-account-user", method = RequestMethod.POST)
+	public ResponseEntity<ContaDTO> openAccountUser(@Valid @RequestBody ClienteDTO clienteDTO, ContaDTO contaDTO) {
+		
+		Cliente cliente = clienteService.saveClient(clienteDTO);
 		contaService.saveAccountUser(cliente, contaDTO);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);

@@ -3,12 +3,16 @@ package com.donus.challenge.api.account.management.service;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.donus.challenge.api.account.management.exception.DuplicateDataException;
+import com.donus.challenge.api.account.management.exception.InvalidDataException;
 import com.donus.challenge.api.account.management.model.dto.ClienteDTO;
 import com.donus.challenge.api.account.management.model.entity.Cliente;
 import com.donus.challenge.api.account.management.repository.ClienteRepository;
+import com.donus.challenge.api.account.management.util.DataValidator;
 
 @Service
 public class ClienteService {
@@ -21,18 +25,25 @@ public class ClienteService {
 	}
 
 	@Transactional
-	public ClienteDTO saveClient(ClienteDTO clienteDTO) {
-		
-		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+	public Cliente saveClient(ClienteDTO clienteDTO) {
 
-		Cliente clienteEntity = modelMapper.map(clienteDTO, Cliente.class);
+		try {
 
-		clienteRepository.save(clienteEntity);
+			if (!DataValidator.isCPF(clienteDTO.getCpf()))
+				throw new InvalidDataException("CPF inválido");
 
-		ClienteDTO returnValue = modelMapper.map(clienteEntity, ClienteDTO.class);
+			ModelMapper modelMapper = new ModelMapper();
+			modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-		return returnValue;
+			Cliente clienteEntity = modelMapper.map(clienteDTO, Cliente.class);
+
+			clienteRepository.save(clienteEntity);
+
+			return clienteEntity;
+
+		} catch (DataIntegrityViolationException e) {
+			throw new DuplicateDataException("CPF já utilizado");
+		}
 
 	}
 }
