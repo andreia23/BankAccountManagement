@@ -43,7 +43,7 @@ public class Conta implements Serializable {
 	@Column(name = "numero_conta")
 	private String numero;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne
 	@JoinColumn(name = "id_cliente", foreignKey = @ForeignKey(name = "FK_CLIENTE"))
 	private Cliente cliente;
 
@@ -51,7 +51,7 @@ public class Conta implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
-	private BigDecimal saldo = BigDecimal.ZERO;
+	private BigDecimal saldo;
 
 	@OneToMany(mappedBy = "conta", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
 	private Set<Transacao> transacoes = new HashSet<Transacao>();

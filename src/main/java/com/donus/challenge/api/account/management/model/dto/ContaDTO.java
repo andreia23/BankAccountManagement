@@ -21,7 +21,7 @@ public class ContaDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Integer idConta;
+//	private Integer idConta;
 	private Cliente cliente;
 	private String numero; 
 	private Date date;
@@ -34,7 +34,7 @@ public class ContaDTO implements Serializable {
 	}
 
 	public ContaDTO(Conta conta) {
-		idConta = conta.getIdConta();
+//		idConta = conta.getIdConta();
 		cliente = conta.getCliente();
 		date = conta.getDate();
 		saldo = conta.getSaldo();
@@ -42,20 +42,20 @@ public class ContaDTO implements Serializable {
 
 	}
 
-	/**
-	 * @return the idConta
-	 */
-	public Integer getIdConta() {
-		return idConta;
-	}
-
-	/**
-	 * @param idConta the idConta to set
-	 */
-	public void setIdConta(Integer idConta) {
-		this.idConta = idConta;
-	}
-	
+//	/**
+//	 * @return the idConta
+//	 */
+//	public Integer getIdConta() {
+//		return idConta;
+//	}
+//
+//	/**
+//	 * @param idConta the idConta to set
+//	 */
+//	public void setIdConta(Integer idConta) {
+//		this.idConta = idConta;
+//	}
+//	
 	
 
 	/**

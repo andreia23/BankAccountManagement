@@ -6,30 +6,43 @@ import java.util.Date;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.donus.challenge.api.account.management.exception.AccountNotFoundException;
 import com.donus.challenge.api.account.management.exception.InvalidDataException;
+import com.donus.challenge.api.account.management.model.dto.ClienteDTO;
 import com.donus.challenge.api.account.management.model.dto.ContaDTO;
+import com.donus.challenge.api.account.management.model.entity.Cliente;
 import com.donus.challenge.api.account.management.model.entity.Conta;
+import com.donus.challenge.api.account.management.repository.ClienteRepository;
 import com.donus.challenge.api.account.management.repository.ContaRepository;
 import com.donus.challenge.api.account.management.util.DataValidator;
 import com.donus.challenge.api.account.management.util.NumberGeberatorUtil;
 
+/**
+ * @author andreia
+ *
+ */
 @Service
 public class ContaService {
 
 	private ContaRepository contaRepository;
 
+	private ClienteRepository clienteRepository;
+
 	@Autowired
-	public ContaService(ContaRepository contaRepository) {
+	public ContaService(ContaRepository contaRepository, ClienteRepository clienteRepository) {
 		this.contaRepository = contaRepository;
+		this.clienteRepository = clienteRepository;
 	}
 
-	public Conta saveConta(Conta conta) {
+	/**
+	 * @param conta
+	 * @return
+	 */
+	@Transactional
+	public Conta saveAccount(Conta conta) {
 		return contaRepository.save(conta);
 	}
 
@@ -37,10 +50,20 @@ public class ContaService {
 	 * @param contaDTO
 	 * @return
 	 */
-	public ContaDTO saveAccount(ContaDTO contaDTO) {
+	@Transactional
+	public void saveAccountUser(ClienteDTO cliente, ContaDTO contaDTO) {
+
+		if (!DataValidator.isCPF(cliente.getCpf()))
+			throw new InvalidDataException("CPF inválido");
 
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+		Cliente clienteEntity = modelMapper.map(cliente, Cliente.class);
+		clienteRepository.save(clienteEntity);
+		contaDTO.setCliente(clienteEntity);
+		contaDTO.setAtiva(true);
+		contaDTO.setSaldo(BigDecimal.ZERO);
 
 		Date now = new Date();
 		contaDTO.setDate(now);
@@ -48,10 +71,6 @@ public class ContaService {
 		Conta contaEntity = modelMapper.map(contaDTO, Conta.class);
 
 		contaRepository.save(contaEntity);
-
-		ContaDTO returnValue = modelMapper.map(contaEntity, ContaDTO.class);
-
-		return returnValue;
 
 	}
 

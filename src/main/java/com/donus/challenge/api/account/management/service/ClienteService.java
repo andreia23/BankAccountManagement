@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.donus.challenge.api.account.management.model.dto.ClienteDTO;
 import com.donus.challenge.api.account.management.model.entity.Cliente;
@@ -19,6 +20,7 @@ public class ClienteService {
 		this.clienteRepository = clienteRepository;
 	}
 
+	@Transactional
 	public ClienteDTO saveClient(ClienteDTO clienteDTO) {
 		
 		ModelMapper modelMapper = new ModelMapper();
