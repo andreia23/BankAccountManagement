@@ -25,7 +25,10 @@ import com.donus.challenge.api.account.management.service.ClienteService;
 import com.donus.challenge.api.account.management.service.ContaService;
 import com.donus.challenge.api.account.management.service.TransacaoService;
 
-//@Api(value="API REST Produtos")
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(value="API REST Contas")
 @RestController
 public class ContaController {
 
@@ -64,6 +67,7 @@ public class ContaController {
 	 * @param contaDTO
 	 * @return
 	 */
+	@ApiOperation(value="Abre uma nova conta")
 	@RequestMapping(value = "/v1/open-account-user", method = RequestMethod.POST)
 	public ResponseEntity<ContaDTO> openAccountUser(@Valid @RequestBody ClienteRequest clienteRequest,
 			ContaDTO contaDTO) {
@@ -84,6 +88,7 @@ public class ContaController {
 	 * @param transacaoRequest
 	 * @return
 	 */
+	@ApiOperation(value="Realiza depósito")
 	@RequestMapping(path = "/v1/deposit", method = RequestMethod.PUT)
 	public ResponseEntity<?> deposit(@Valid @RequestParam String number,
 			@RequestBody TransacaoRequest transacaoRequest) {
@@ -104,6 +109,7 @@ public class ContaController {
 	 * @param transacaoRequest
 	 * @return
 	 */
+	@ApiOperation(value="Faz transferências")
 	@RequestMapping(value = "/v1/transfer", method = RequestMethod.POST)
 	public ResponseEntity<TransacaoDTO> transfer(@Valid @RequestParam String sourceNumber,
 			@RequestParam String destinationNumber, @RequestBody TransacaoRequest transacaoRequest) {
@@ -122,6 +128,7 @@ public class ContaController {
 	 * @param number
 	 * @return
 	 */
+	@ApiOperation(value="Obtém uma conta pelo o nome")
 	@RequestMapping(value = "/v1/get-account", method = RequestMethod.GET)
 	public ResponseEntity<ContaDTO> accountNumber(@Valid @RequestParam String number) {
 
@@ -135,6 +142,7 @@ public class ContaController {
 	 * @param number
 	 * @return
 	 */
+	@ApiOperation(value="Obtém o saldo da conta")
 	@RequestMapping(value = "/v1/get-balance", method = RequestMethod.GET)
 	public ResponseEntity<?> getAccountBalance(@Valid @RequestParam String number) {
 
@@ -142,7 +150,8 @@ public class ContaController {
 		return new ResponseEntity<>("Saldo: " + saldo, HttpStatus.OK);
 
 	}
-
+	
+	@ApiOperation(value="Desativa a conta")
 	@RequestMapping(value = "/v1/deactivate-account", method = RequestMethod.GET)
 	public ResponseEntity<?> deactivateAccount(@Valid @RequestParam String number) {
 
@@ -150,7 +159,7 @@ public class ContaController {
 		return new ResponseEntity<>("Conta desativada com sucesso", HttpStatus.OK);
 
 	}
-
+	@ApiOperation(value="Apaga a conta")
 	@RequestMapping(value = "/v1/delete-account", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteAccount(@Valid @RequestParam String number) {
 
