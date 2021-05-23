@@ -59,7 +59,6 @@ public class ContaController {
 //		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
 //	}
 
-	
 	/**
 	 * @param clienteDTO
 	 * @param contaDTO
@@ -74,7 +73,6 @@ public class ContaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
 	}
 
-	
 	/**
 	 * @param number
 	 * @param transacaoRequest
@@ -94,7 +92,6 @@ public class ContaController {
 		return new ResponseEntity<>("Deposito realizado com sucesso", HttpStatus.OK);
 	}
 
-	
 	/**
 	 * @param sourceNumber
 	 * @param destinationNumber
@@ -115,12 +112,44 @@ public class ContaController {
 
 	}
 
-	@RequestMapping(value = "/v1/get", method = RequestMethod.GET)
+	/**
+	 * @param number
+	 * @return
+	 */
+	@RequestMapping(value = "/v1/get-account", method = RequestMethod.GET)
 	public ResponseEntity<ContaDTO> accountNumber(@Valid @RequestParam String number) {
 
 		ContaDTO contaDTO = contaService.getAccount(number);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
+
+	}
+
+	/**
+	 * @param number
+	 * @return
+	 */
+	@RequestMapping(value = "/v1/get-balance", method = RequestMethod.GET)
+	public ResponseEntity<?> getAccountBalance(@Valid @RequestParam String number) {
+
+		BigDecimal saldo = contaService.getBalance(number);
+		return new ResponseEntity<>("Saldo: " + saldo, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/v1/deactivate-account", method = RequestMethod.GET)
+	public ResponseEntity<?> deactivateAccount(@Valid @RequestParam String number) {
+
+		contaService.deactivate(number);
+		return new ResponseEntity<>("Conta desativada com sucesso", HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/v1/delete-account", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteAccount(@Valid @RequestParam String number) {
+
+		contaService.delete(number);
+		return new ResponseEntity<>("Conta deletada com sucesso", HttpStatus.OK);
 
 	}
 

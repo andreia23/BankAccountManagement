@@ -8,18 +8,15 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.donus.challenge.api.account.management.exception.AccountNotFoundException;
 import com.donus.challenge.api.account.management.exception.InvalidDataException;
 import com.donus.challenge.api.account.management.exception.NotEnoughMoneyException;
-import com.donus.challenge.api.account.management.model.dto.ClienteDTO;
 import com.donus.challenge.api.account.management.model.dto.ContaDTO;
 import com.donus.challenge.api.account.management.model.dto.TransacaoDTO;
 import com.donus.challenge.api.account.management.model.entity.Cliente;
 import com.donus.challenge.api.account.management.model.entity.Conta;
 import com.donus.challenge.api.account.management.model.entity.Transacao;
-import com.donus.challenge.api.account.management.model.request.TransacaoRequest;
 import com.donus.challenge.api.account.management.repository.ClienteRepository;
 import com.donus.challenge.api.account.management.repository.ContaRepository;
 import com.donus.challenge.api.account.management.repository.TransacaoRepository;
@@ -121,7 +118,7 @@ public class ContaService {
 	@Transactional
 	public void transfer(String sourceNumber, String destinationNumber, TransacaoDTO transacaoDTO) {
 
-		if (!DataValidator.validateValueNegative(transacaoDTO.getValor())){
+		if (!DataValidator.validateValueNegative(transacaoDTO.getValor())) {
 			throw new InvalidDataException("Valor inválido");
 		}
 
@@ -172,16 +169,86 @@ public class ContaService {
 
 	}
 
+	/**
+	 * @param number
+	 * @return
+	 */
+	@Transactional
 	public ContaDTO getAccount(String number) {
 
-		Conta sourceAccount = contaRepository.findByNumberAccount(number);
+		if (!contaRepository.isAccountExists(number)) {
+			throw new AccountNotFoundException("Conta inexistente");
+		}
+
+		Conta conta = contaRepository.findByNumberAccount(number);
+
+		if (!conta.isAtiva()) {
+			throw new InvalidDataException("Conta desativada");
+		}
 
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-		ContaDTO contaDTO = modelMapper.map(sourceAccount, ContaDTO.class);
+		ContaDTO contaDTO = modelMapper.map(conta, ContaDTO.class);
 
 		return contaDTO;
+	}
+
+	/**
+	 * @param number
+	 * @return
+	 */
+	@Transactional
+	public BigDecimal getBalance(String number) {
+
+		if (!contaRepository.isAccountExists(number)) {
+			throw new AccountNotFoundException("Conta inexistente");
+		}
+
+		Conta conta = contaRepository.findByNumberAccount(number);
+
+		if (!conta.isAtiva()) {
+			throw new InvalidDataException("Conta desativada");
+		}
+
+		return conta.getSaldo();
+	}
+
+	/**
+	 * @param number
+	 */
+	@Transactional
+	public void deactivate(String number) {
+
+		if (!contaRepository.isAccountExists(number)) {
+			throw new AccountNotFoundException("Conta inexistente");
+		}
+
+		Conta conta = contaRepository.findByNumberAccount(number);
+
+		if (!conta.isAtiva()) {
+			throw new InvalidDataException("Conta já desativada");
+		}
+
+		conta.setAtiva(false);
+		contaRepository.save(conta);
+
+	}
+
+	/**
+	 * @param number
+	 */
+	@Transactional
+	public void delete(String number) {
+		
+		if (!contaRepository.isAccountExists(number)) {
+			throw new AccountNotFoundException("Conta inexistente");
+		}
+
+		Conta conta = contaRepository.findByNumberAccount(number);
+
+		contaRepository.delete(conta);
+
 	}
 
 }
