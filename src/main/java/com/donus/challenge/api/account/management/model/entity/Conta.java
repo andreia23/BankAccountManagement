@@ -42,7 +42,7 @@ public class Conta implements Serializable {
 	@Column(name = "numero_conta")
 	private String numero;
 
-	@OneToOne
+	@OneToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "id_cliente", foreignKey = @ForeignKey(name = "FK_CLIENTE"))
 	private Cliente cliente;
 

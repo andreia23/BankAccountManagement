@@ -29,7 +29,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
 	private ApiInfo metaData() {
 		ApiInfo apiInfo = new ApiInfo("Gerenciamento de contas bancárias",
-				"API REST com algumas funções essenciais relacionadas ao gerenciamento de contas bancárias", "1.0.0",
+				"API REST com algumas funções essenciais relacionadas ao gerenciamento de contas bancárias.", "1.0.0",
 				"Terms of Service",
 				new Contact("Andréia Berto", "https://github.com/andreia23/BankAccountManagement",
 						"andreialima.berto08@gmail.com"),

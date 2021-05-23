@@ -24,26 +24,26 @@ public class ClienteService {
 		this.clienteRepository = clienteRepository;
 	}
 
-	@Transactional
-	public Cliente saveClient(ClienteDTO clienteDTO) {
+//	@Transactional
+//	public Cliente saveClient(ClienteDTO clienteDTO) {
+//
+//		if (!DataValidator.isCPF(clienteDTO.getCpf()))
+//			throw new InvalidDataException("CPF inválido");
+//
+//		try {
+//
+//			ModelMapper modelMapper = new ModelMapper();
+//			modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//
+//			Cliente clienteEntity = modelMapper.map(clienteDTO, Cliente.class);
+//
+//			clienteRepository.save(clienteEntity);
+//
+//			return clienteEntity;
+//
+//		} catch (DataIntegrityViolationException e) {
+//			throw new DuplicateDataException("CPF já utilizado");
+//		}
 
-		if (!DataValidator.isCPF(clienteDTO.getCpf()))
-			throw new InvalidDataException("CPF inválido");
-
-		try {
-
-			ModelMapper modelMapper = new ModelMapper();
-			modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
-			Cliente clienteEntity = modelMapper.map(clienteDTO, Cliente.class);
-
-			clienteRepository.save(clienteEntity);
-
-			return clienteEntity;
-
-		} catch (DataIntegrityViolationException e) {
-			throw new DuplicateDataException("CPF já utilizado");
-		}
-
-	}
+//	}
 }

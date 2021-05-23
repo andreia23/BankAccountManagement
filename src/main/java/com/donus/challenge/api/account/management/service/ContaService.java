@@ -6,20 +6,21 @@ import java.util.Date;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.donus.challenge.api.account.management.exception.AccountNotFoundException;
+import com.donus.challenge.api.account.management.exception.DuplicateDataException;
 import com.donus.challenge.api.account.management.exception.InvalidDataException;
 import com.donus.challenge.api.account.management.exception.NotEnoughMoneyException;
+import com.donus.challenge.api.account.management.model.dto.ClienteDTO;
 import com.donus.challenge.api.account.management.model.dto.ContaDTO;
 import com.donus.challenge.api.account.management.model.dto.TransacaoDTO;
 import com.donus.challenge.api.account.management.model.entity.Cliente;
 import com.donus.challenge.api.account.management.model.entity.Conta;
 import com.donus.challenge.api.account.management.model.entity.Transacao;
-import com.donus.challenge.api.account.management.repository.ClienteRepository;
 import com.donus.challenge.api.account.management.repository.ContaRepository;
-import com.donus.challenge.api.account.management.repository.TransacaoRepository;
 import com.donus.challenge.api.account.management.util.DataValidator;
 import com.donus.challenge.api.account.management.util.NumberGeberatorUtil;
 
@@ -32,16 +33,9 @@ public class ContaService {
 
 	private ContaRepository contaRepository;
 
-	private ClienteRepository clienteRepository;
-
-	private TransacaoRepository transacaoRepository;
-
 	@Autowired
-	public ContaService(ContaRepository contaRepository, ClienteRepository clienteRepository,
-			TransacaoRepository transacaoRepository) {
+	public ContaService(ContaRepository contaRepository) {
 		this.contaRepository = contaRepository;
-		this.clienteRepository = clienteRepository;
-		this.transacaoRepository = transacaoRepository;
 	}
 
 	/**
@@ -58,21 +52,31 @@ public class ContaService {
 	 * @param contaDTO
 	 */
 	@Transactional
-	public void saveAccountUser(Cliente cliente, ContaDTO contaDTO) {
+	public void saveAccountUser(ClienteDTO clienteDTO, ContaDTO contaDTO) {
+
+		if (!DataValidator.isCPF(clienteDTO.getCpf()))
+			throw new InvalidDataException("CPF inválido");
 
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-		contaDTO.setCliente(cliente);
-		contaDTO.setAtiva(true);
-		contaDTO.setSaldo(BigDecimal.ZERO);
+		try {
 
-		Date now = new Date();
-		contaDTO.setDate(now);
-		contaDTO.setNumero(NumberGeberatorUtil.accountNumberGenerator());
-		Conta contaEntity = modelMapper.map(contaDTO, Conta.class);
+			Cliente clienteEntity = modelMapper.map(clienteDTO, Cliente.class);
 
-		contaRepository.save(contaEntity);
+			contaDTO.setCliente(clienteEntity);
+			contaDTO.setAtiva(true);
+			contaDTO.setSaldo(BigDecimal.ZERO);
+
+			Date now = new Date();
+			contaDTO.setDate(now);
+			contaDTO.setNumero(NumberGeberatorUtil.accountNumberGenerator());
+			Conta contaEntity = modelMapper.map(contaDTO, Conta.class);
+			contaRepository.save(contaEntity);
+
+		} catch (DataIntegrityViolationException e) {
+			throw new DuplicateDataException("CPF já utilizado");
+		}
 
 	}
 
@@ -234,13 +238,35 @@ public class ContaService {
 		contaRepository.save(conta);
 
 	}
+	
+	/**
+	 * @param number
+	 */
+	@Transactional
+	public void activate(String number) {
+
+		if (!contaRepository.isAccountExists(number)) {
+			throw new AccountNotFoundException("Conta inexistente");
+		}
+
+		Conta conta = contaRepository.findByNumberAccount(number);
+
+		if (conta.isAtiva()) {
+			throw new InvalidDataException("Conta já ativada");
+		}
+
+		conta.setAtiva(true);
+		contaRepository.save(conta);
+
+	}
+	
 
 	/**
 	 * @param number
 	 */
 	@Transactional
 	public void delete(String number) {
-		
+
 		if (!contaRepository.isAccountExists(number)) {
 			throw new AccountNotFoundException("Conta inexistente");
 		}

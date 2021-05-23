@@ -3,11 +3,9 @@ package com.donus.challenge.api.account.management.model.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import com.donus.challenge.api.account.management.model.entity.Cliente;
 import com.donus.challenge.api.account.management.model.entity.Conta;
-import com.donus.challenge.api.account.management.model.entity.Transacao;
 
 /**
  * @author andreia
@@ -32,8 +30,10 @@ public class ContaDTO implements Serializable {
 
 	public ContaDTO(Conta conta) {
 		cliente = conta.getCliente();
+		numero = conta.getNumero();
 		date = conta.getDate();
 		saldo = conta.getSaldo();
+		ativa = conta.isAtiva();
 
 	}
 
