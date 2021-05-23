@@ -40,15 +40,6 @@ public class ContaService {
 	}
 
 	/**
-	 * @param conta
-	 * @return
-	 */
-	@Transactional
-	public Conta saveAccount(Conta conta) {
-		return contaRepository.save(conta);
-	}
-
-	/**
 	 * @param cliente
 	 * @param contaDTO
 	 */
@@ -239,7 +230,7 @@ public class ContaService {
 		contaRepository.save(conta);
 
 	}
-	
+
 	/**
 	 * @param number
 	 */
@@ -260,7 +251,6 @@ public class ContaService {
 		contaRepository.save(conta);
 
 	}
-	
 
 	/**
 	 * @param number
@@ -277,7 +267,7 @@ public class ContaService {
 		contaRepository.delete(conta);
 
 	}
-	
+
 	/**
 	 * @return
 	 */
