@@ -15,27 +15,23 @@ import javax.persistence.UniqueConstraint;
  *
  */
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"cpf"})})
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "cpf" }) })
 public class Cliente implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idCliente;
-	
+
 	private String nomeCompleto;
-	
+
 	@Column
 	private String cpf;
-	
-//	@OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "conta_corrente_id")
-//    private Conta conta;
-//	
+
 	/**
 	 * @return the idCliente
 	 */
@@ -114,7 +110,5 @@ public class Cliente implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }

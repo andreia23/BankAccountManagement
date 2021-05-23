@@ -2,48 +2,18 @@ package com.donus.challenge.api.account.management.model.request;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author andreia
  *
  */
 public class TransacaoRequest {
 
-//	private String sourceNumber;
-
-//	@NotNull(message = "First name cannot be null")
-//	private String destinationNumber;
-
 	private String descricao;
 
+	@NotNull(message = "Valor não pode ser nulo")
 	private BigDecimal valor;
-
-	/**
-	 * @return the sourceNumber
-	 */
-//	public String getSourceNumber() {
-//		return sourceNumber;
-//	}
-//
-//	/**
-//	 * @param sourceNumber the sourceNumber to set
-//	 */
-//	public void setSourceNumber(String sourceNumber) {
-//		this.sourceNumber = sourceNumber;
-//	}
-//
-//	/**
-//	 * @return the destinationNumber
-//	 */
-//	public String getDestinationNumber() {
-//		return destinationNumber;
-//	}
-//
-//	/**
-//	 * @param destinationNumber the destinationNumber to set
-//	 */
-//	public void setDestinationNumber(String destinationNumber) {
-//		this.destinationNumber = destinationNumber;
-//	}
 
 	/**
 	 * @return the descricao

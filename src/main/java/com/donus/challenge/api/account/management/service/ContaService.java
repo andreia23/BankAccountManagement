@@ -19,6 +19,7 @@ import com.donus.challenge.api.account.management.model.dto.TransacaoDTO;
 import com.donus.challenge.api.account.management.model.entity.Cliente;
 import com.donus.challenge.api.account.management.model.entity.Conta;
 import com.donus.challenge.api.account.management.model.entity.Transacao;
+import com.donus.challenge.api.account.management.model.request.TransacaoRequest;
 import com.donus.challenge.api.account.management.repository.ClienteRepository;
 import com.donus.challenge.api.account.management.repository.ContaRepository;
 import com.donus.challenge.api.account.management.repository.TransacaoRepository;
@@ -39,7 +40,8 @@ public class ContaService {
 	private TransacaoRepository transacaoRepository;
 
 	@Autowired
-	public ContaService(ContaRepository contaRepository, ClienteRepository clienteRepository, TransacaoRepository transacaoRepository ) {
+	public ContaService(ContaRepository contaRepository, ClienteRepository clienteRepository,
+			TransacaoRepository transacaoRepository) {
 		this.contaRepository = contaRepository;
 		this.clienteRepository = clienteRepository;
 		this.transacaoRepository = transacaoRepository;
@@ -55,8 +57,8 @@ public class ContaService {
 	}
 
 	/**
+	 * @param cliente
 	 * @param contaDTO
-	 * @return
 	 */
 	@Transactional
 	public void saveAccountUser(Cliente cliente, ContaDTO contaDTO) {
@@ -79,10 +81,18 @@ public class ContaService {
 
 	/**
 	 * @param number
-	 * @param value
+	 * @param transacaoDTO
 	 */
 	@Transactional
-	public void deposit(String number, BigDecimal value) {
+	public void deposit(String number, TransacaoDTO transacaoDTO) {
+
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+		Date now = new Date();
+		transacaoDTO.setDate(now);
+
+		Transacao transacao = modelMapper.map(transacaoDTO, Transacao.class);
 
 		if (!contaRepository.isAccountExists(number)) {
 			throw new AccountNotFoundException("Conta inexistente");
@@ -93,19 +103,27 @@ public class ContaService {
 		if (!conta.isAtiva()) {
 			throw new InvalidDataException("Conta desativada");
 		}
-		
-		if (!DataValidator.validateValue(value)) {
+
+		if (!DataValidator.validateValue(transacao.getValor())) {
 			throw new InvalidDataException("Valor inválido");
 		}
 
-		contaRepository.updateBalance(number, value);
+		BigDecimal destinationAccountSum = conta.getSaldo().add(transacao.getValor());
+		conta.setSaldo(destinationAccountSum);
+
+		addTransacao(conta, transacao);
 
 	}
 
 	/**
 	 * @param transacaoDTO
 	 */
-	public Transacao transfer(String sourceNumber, String destinationNumber, TransacaoDTO transacaoDTO) {
+	@Transactional
+	public void transfer(String sourceNumber, String destinationNumber, TransacaoDTO transacaoDTO) {
+
+		if (!DataValidator.validateValueNegative(transacaoDTO.getValor())){
+			throw new InvalidDataException("Valor inválido");
+		}
 
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -131,23 +149,15 @@ public class ContaService {
 
 		BigDecimal sourceAccountSum = sourceAccount.getSaldo().subtract(transacao.getValor());
 		sourceAccount.setSaldo(sourceAccountSum);
-//		sourceAccount.adicionar(transacao);
-		
+
 		transacao.setConta(sourceAccount);
-//		contaRepository.save(sourceAccount);
-		
 		addTransacao(sourceAccount, transacao);
-		
+
 		Conta destinationAccount = contaRepository.findByNumberAccount(destinationNumber);
 		BigDecimal destinationAccountSum = destinationAccount.getSaldo().add(transacao.getValor());
 		destinationAccount.setSaldo(destinationAccountSum);
-//		contaRepository.save(destinationAccount);
-		addTransacao(destinationAccount, transacao);
 
-
-//		transacaoRepository.save(transacao);
-
-		return transacao;
+		contaRepository.save(destinationAccount);
 
 	}
 
@@ -157,9 +167,21 @@ public class ContaService {
 	 */
 	@Transactional
 	public void addTransacao(Conta conta, Transacao transacao) {
-		conta.adicionar(transacao);
+		conta.addTransacao(transacao);
 		contaRepository.save(conta);
 
+	}
+
+	public ContaDTO getAccount(String number) {
+
+		Conta sourceAccount = contaRepository.findByNumberAccount(number);
+
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+		ContaDTO contaDTO = modelMapper.map(sourceAccount, ContaDTO.class);
+
+		return contaDTO;
 	}
 
 }

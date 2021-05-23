@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.donus.challenge.api.account.management.model.entity.Transacao;
-
 /**
  * @author andreia
  *
@@ -18,53 +16,12 @@ public class TransacaoDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-//	private String sourceNumber;
-//
-//	private String destinationNumber;
-
 	private String descricao;
 
 	private BigDecimal valor;
 
 	private Date date;
 
-//	public TransacaoDTO(Transacao transacao) {
-//		sourceNumber = transacao.getSourceNumber();
-//		destinationNumber = transacao.getDestinationNumber();
-//		descricao = transacao.getDescricao();
-//		valor = transacao.getValor();
-//		date = transacao.getDate();
-//	}
-
-
-
-//	/**
-//	 * @return the sourceNumber
-//	 */
-//	public String getSourceNumber() {
-//		return sourceNumber;
-//	}
-//
-//	/**
-//	 * @param sourceNumber the sourceNumber to set
-//	 */
-//	public void setSourceNumber(String sourceNumber) {
-//		this.sourceNumber = sourceNumber;
-//	}
-//
-//	/**
-//	 * @return the destinationNumber
-//	 */
-//	public String getDestinationNumber() {
-//		return destinationNumber;
-//	}
-//
-//	/**
-//	 * @param destinationNumber the destinationNumber to set
-//	 */
-//	public void setDestinationNumber(String destinationNumber) {
-//		this.destinationNumber = destinationNumber;
-//	}
 
 	/**
 	 * @return the descricao

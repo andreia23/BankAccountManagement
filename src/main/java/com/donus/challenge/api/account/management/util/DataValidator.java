@@ -77,4 +77,14 @@ public class DataValidator {
 	public static boolean validateValue(BigDecimal valor) {
 	    return valor.compareTo(new BigDecimal("0")) > 0 && valor.compareTo(new BigDecimal("2000")) <= 0;
 	}
+	
+	/**
+	 * @param valor
+	 * @return
+	 */
+	public static boolean validateValueNegative(BigDecimal valor) {
+	    return valor.compareTo(new BigDecimal("0")) > 0 ;
+	}
+	
+	
 }

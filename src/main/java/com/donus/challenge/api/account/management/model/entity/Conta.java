@@ -52,22 +52,10 @@ public class Conta implements Serializable {
 
 	private BigDecimal saldo;
 
-	@OneToMany(mappedBy = "conta", cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
+	@OneToMany(mappedBy = "conta", cascade = {CascadeType.ALL})
 	private List<Transacao> transacoes;
 
 	private boolean ativa;
-
-//	public BigDecimal getSaldo() {
-//		BigDecimal total = BigDecimal.ZERO;
-//		for (Transacao t : this.transacoes) {
-//			total = total.add(t.getValor());
-//		}
-//		return total;
-//	}
-
-	public Conta() {
-		super();
-	}
 
 	/**
 	 * @return the idConta
@@ -166,10 +154,11 @@ public class Conta implements Serializable {
 	public void setAtiva(boolean ativa) {
 		this.ativa = ativa;
 	}
-	
-	public void adicionar(Transacao transacao) {
-		transacao.setConta(this);		
+
+	public void addTransacao(Transacao transacao) {
 		this.transacoes.add(transacao);
+		transacao.setConta(this);
+
 	}
 
 	@Override

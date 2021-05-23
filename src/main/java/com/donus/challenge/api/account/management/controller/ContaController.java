@@ -59,32 +59,45 @@ public class ContaController {
 //		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
 //	}
 
+	
 	/**
-	 * @param cliente
+	 * @param clienteDTO
 	 * @param contaDTO
 	 * @return
 	 */
 	@RequestMapping(value = "/v1/open-account-user", method = RequestMethod.POST)
 	public ResponseEntity<ContaDTO> openAccountUser(@Valid @RequestBody ClienteDTO clienteDTO, ContaDTO contaDTO) {
-		
+
 		Cliente cliente = clienteService.saveClient(clienteDTO);
 		contaService.saveAccountUser(cliente, contaDTO);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
 	}
 
+	
 	/**
 	 * @param number
-	 * @param value
+	 * @param transacaoRequest
 	 * @return
 	 */
 	@RequestMapping(path = "/v1/deposit", method = RequestMethod.PUT)
-	public ResponseEntity<?> deposit(@RequestParam String number, @RequestParam BigDecimal value) {
-		contaService.deposit(number, value);
+	public ResponseEntity<?> deposit(@Valid @RequestParam String number,
+			@RequestBody TransacaoRequest transacaoRequest) {
+
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+		TransacaoDTO transacaoDTO = modelMapper.map(transacaoRequest, TransacaoDTO.class);
+
+		contaService.deposit(number, transacaoDTO);
+
 		return new ResponseEntity<>("Deposito realizado com sucesso", HttpStatus.OK);
 	}
 
+	
 	/**
+	 * @param sourceNumber
+	 * @param destinationNumber
 	 * @param transacaoRequest
 	 * @return
 	 */
@@ -96,11 +109,18 @@ public class ContaController {
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 		TransacaoDTO transacaoDTO = modelMapper.map(transacaoRequest, TransacaoDTO.class);
-		Transacao transacao = contaService.transfer(sourceNumber, destinationNumber, transacaoDTO);
-
-		transacaoService.saveTransacao(transacao);
+		contaService.transfer(sourceNumber, destinationNumber, transacaoDTO);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(transacaoDTO);
+
+	}
+
+	@RequestMapping(value = "/v1/get", method = RequestMethod.GET)
+	public ResponseEntity<ContaDTO> accountNumber(@Valid @RequestParam String number) {
+
+		ContaDTO contaDTO = contaService.getAccount(number);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
 
 	}
 

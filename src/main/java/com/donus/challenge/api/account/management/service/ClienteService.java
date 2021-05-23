@@ -29,7 +29,7 @@ public class ClienteService {
 
 		if (!DataValidator.isCPF(clienteDTO.getCpf()))
 			throw new InvalidDataException("CPF inválido");
-		
+
 		try {
 
 			ModelMapper modelMapper = new ModelMapper();

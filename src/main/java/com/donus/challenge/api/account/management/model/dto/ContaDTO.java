@@ -3,9 +3,7 @@ package com.donus.challenge.api.account.management.model.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.donus.challenge.api.account.management.model.entity.Cliente;
 import com.donus.challenge.api.account.management.model.entity.Conta;
@@ -22,12 +20,10 @@ public class ContaDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-//	private Integer idConta;
 	private Cliente cliente;
-	private String numero; 
+	private String numero;
 	private Date date;
 	private BigDecimal saldo;
-	private List<Transacao> transacoes;
 	private boolean ativa;
 
 	public ContaDTO() {
@@ -35,29 +31,11 @@ public class ContaDTO implements Serializable {
 	}
 
 	public ContaDTO(Conta conta) {
-//		idConta = conta.getIdConta();
 		cliente = conta.getCliente();
 		date = conta.getDate();
 		saldo = conta.getSaldo();
-		transacoes = conta.getTransacoes();
 
 	}
-
-//	/**
-//	 * @return the idConta
-//	 */
-//	public Integer getIdConta() {
-//		return idConta;
-//	}
-//
-//	/**
-//	 * @param idConta the idConta to set
-//	 */
-//	public void setIdConta(Integer idConta) {
-//		this.idConta = idConta;
-//	}
-//	
-	
 
 	/**
 	 * @return the cliente
@@ -65,6 +43,7 @@ public class ContaDTO implements Serializable {
 	public Cliente getCliente() {
 		return cliente;
 	}
+
 	/**
 	 * @param cliente the cliente to set
 	 */
@@ -85,7 +64,7 @@ public class ContaDTO implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
 	/**
 	 * @return the numero
 	 */
@@ -100,7 +79,6 @@ public class ContaDTO implements Serializable {
 		this.numero = numero;
 	}
 
-
 	/**
 	 * @return the saldo
 	 */
@@ -113,20 +91,6 @@ public class ContaDTO implements Serializable {
 	 */
 	public void setSaldo(BigDecimal saldo) {
 		this.saldo = saldo;
-	}
-
-	/**
-	 * @return the transacoes
-	 */
-	public List<Transacao> getTransacoes() {
-		return transacoes;
-	}
-
-	/**
-	 * @param transacoes the transacoes to set
-	 */
-	public void setTransacoes(List<Transacao> transacoes) {
-		this.transacoes = transacoes;
 	}
 
 	/**
