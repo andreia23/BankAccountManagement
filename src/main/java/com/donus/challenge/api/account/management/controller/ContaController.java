@@ -19,7 +19,7 @@ import com.donus.challenge.api.account.management.model.dto.ClienteDTO;
 import com.donus.challenge.api.account.management.model.dto.ContaDTO;
 import com.donus.challenge.api.account.management.model.dto.TransacaoDTO;
 import com.donus.challenge.api.account.management.model.entity.Cliente;
-import com.donus.challenge.api.account.management.model.entity.Transacao;
+import com.donus.challenge.api.account.management.model.request.ClienteRequest;
 import com.donus.challenge.api.account.management.model.request.TransacaoRequest;
 import com.donus.challenge.api.account.management.service.ClienteService;
 import com.donus.challenge.api.account.management.service.ContaService;
@@ -65,7 +65,13 @@ public class ContaController {
 	 * @return
 	 */
 	@RequestMapping(value = "/v1/open-account-user", method = RequestMethod.POST)
-	public ResponseEntity<ContaDTO> openAccountUser(@Valid @RequestBody ClienteDTO clienteDTO, ContaDTO contaDTO) {
+	public ResponseEntity<ContaDTO> openAccountUser(@Valid @RequestBody ClienteRequest clienteRequest,
+			ContaDTO contaDTO) {
+
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+		ClienteDTO clienteDTO = modelMapper.map(clienteRequest, ClienteDTO.class);
 
 		Cliente cliente = clienteService.saveClient(clienteDTO);
 		contaService.saveAccountUser(cliente, contaDTO);

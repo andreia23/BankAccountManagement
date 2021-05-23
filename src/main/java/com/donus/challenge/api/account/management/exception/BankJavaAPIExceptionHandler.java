@@ -9,8 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ServerErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
@@ -63,6 +63,14 @@ public class BankJavaAPIExceptionHandler extends ResponseEntityExceptionHandler 
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 
 		return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(value = { ServerErrorException.class })
+	protected ResponseEntity<ErrorDetails> handleAPIException(ServerErrorException ex, WebRequest request) {
+
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+
+		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

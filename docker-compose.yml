@@ -1,0 +1,33 @@
+version: "3.4"
+
+#x-database-config-data:
+#  &postgres-connection-data
+#    environment:
+#        POSTGRES_USER: "bank_user"
+#        POSTGRES_PASSWORD: "bank_user"
+#        POSTGRES_DB: "bank-system"
+
+services:
+
+#  postgres:
+#    image: postgres:latest 
+#    ports:
+#      - "5432:5432"
+#    <<: *postgres-connection-data
+#    volumes:
+#      - ./var/lib/postgresql/data
+#    container_name: portal_postgres
+#    
+
+  bank-app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile    
+    image: bank-app:latest
+    network_mode: bridge
+    container_name: bank-app
+    expose:
+      - 9023
+    ports:
+      - 9023:9023
+  

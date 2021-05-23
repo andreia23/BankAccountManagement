@@ -1,19 +1,17 @@
-package com.donus.challenge.api.account.management.model.dto;
+package com.donus.challenge.api.account.management.model.request;
 
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author andreia
  *
  */
-public class ClienteDTO implements Serializable {
+public class ClienteRequest {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+	@NotNull(message = "Nome não pode ser nulo")
 	private String nomeCompleto;
+
+	@NotNull(message = "CPF não pode ser nulo")
 	private String cpf;
 
 	/**
@@ -43,4 +41,5 @@ public class ClienteDTO implements Serializable {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+
 }
