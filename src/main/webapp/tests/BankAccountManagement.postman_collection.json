@@ -1,0 +1,345 @@
+{
+	"info": {
+		"_postman_id": "ff4b1ee4-25de-49b8-b892-2b755524f8f8",
+		"name": "BankAccountManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Open-account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{       \"nomeCompleto\" : \"Dea\",\n        \"cpf\" : \"12864644479\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/open-account-user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"open-account-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"descricao\": \"teste\",\n    \"valor\" : 50\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/deposit?number=4369093885",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"deposit"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "4369093885"
+						},
+						{
+							"key": "value",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"descricao\": \"Teste\",\n    \"valor\" : 50\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/transfer?sourceNumber=4369093885&destinationNumber=6712326529",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"transfer"
+					],
+					"query": [
+						{
+							"key": "sourceNumber",
+							"value": "4369093885"
+						},
+						{
+							"key": "destinationNumber",
+							"value": "6712326529"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get-account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/get-account?number=4369093885",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"get-account"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "4369093885"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get-balance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/get-balance?number=4369093885",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"get-balance"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "4369093885"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate-account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/deactivate-account?number=4369093885",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"deactivate-account"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "4369093885"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete-account",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/delete-account?number=4369093885",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"delete-account"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "4369093885"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activate-account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/activate-account?number=4369093885",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"activate-account"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "4369093885"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All-customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/all-customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"all-customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer-by-cpf",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/customer-by-cpf?cpf=12864644479",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"customer-by-cpf"
+					],
+					"query": [
+						{
+							"key": "cpf",
+							"value": "12864644479"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All-accounts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/all-accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"all-accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All-transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9023/banking-system/v1/all-transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9023",
+					"path": [
+						"banking-system",
+						"v1",
+						"all-transactions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

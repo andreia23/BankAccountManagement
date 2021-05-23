@@ -1,6 +1,8 @@
 package com.donus.challenge.api.account.management.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -18,49 +20,29 @@ import org.springframework.web.bind.annotation.RestController;
 import com.donus.challenge.api.account.management.model.dto.ClienteDTO;
 import com.donus.challenge.api.account.management.model.dto.ContaDTO;
 import com.donus.challenge.api.account.management.model.dto.TransacaoDTO;
-import com.donus.challenge.api.account.management.model.entity.Cliente;
+import com.donus.challenge.api.account.management.model.entity.Conta;
 import com.donus.challenge.api.account.management.model.request.ClienteRequest;
 import com.donus.challenge.api.account.management.model.request.TransacaoRequest;
-import com.donus.challenge.api.account.management.service.ClienteService;
 import com.donus.challenge.api.account.management.service.ContaService;
-import com.donus.challenge.api.account.management.service.TransacaoService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * @author andreia
+ *
+ */
 @Api(value = "API REST Contas")
 @RestController
 public class ContaController {
 
 	private ContaService contaService;
 
-	private ClienteService clienteService;
-
-	private TransacaoService transacaoService;
-
 	@Autowired
-	public ContaController(ContaService contaService, ClienteService clienteService,
-			TransacaoService transacaoService) {
+	public ContaController(ContaService contaService) {
 		this.contaService = contaService;
-		this.clienteService = clienteService;
-		this.transacaoService = transacaoService;
-	}
 
-//	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
-//	public ResponseEntity<ContaDTO> openAccount(@RequestBody ContaDTO conta) {
-//
-//		ModelMapper modelMapper = new ModelMapper();
-//		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-//			
-//		ClienteDTO clienteDTO = modelMapper.map(conta.getCliente(), ClienteDTO.class);
-//		ContaDTO contaDTO = modelMapper.map(conta, ContaDTO.class); //ISSO N PRECISA
-//		clienteDTO = clienteService.saveClient(clienteDTO);
-//		Cliente clienteEntity = modelMapper.map(clienteDTO, Cliente.class);
-//		contaDTO.setCliente(clienteEntity);
-//		contaDTO = contaService.saveAccount(contaDTO);
-//
-//		return ResponseEntity.status(HttpStatus.CREATED).body(contaDTO);
-//	}
+	}
 
 	/**
 	 * @param clienteDTO
@@ -126,7 +108,7 @@ public class ContaController {
 	 * @param number
 	 * @return
 	 */
-	@ApiOperation(value = "Obtém uma conta pelo o nome")
+	@ApiOperation(value = "Obtém uma conta pelo o número")
 	@RequestMapping(value = "/v1/get-account", method = RequestMethod.GET)
 	public ResponseEntity<ContaDTO> accountNumber(@Valid @RequestParam String number) {
 
@@ -149,6 +131,10 @@ public class ContaController {
 
 	}
 
+	/**
+	 * @param number
+	 * @return
+	 */
 	@ApiOperation(value = "Desativa a conta")
 	@RequestMapping(value = "/v1/deactivate-account", method = RequestMethod.GET)
 	public ResponseEntity<?> deactivateAccount(@Valid @RequestParam String number) {
@@ -157,7 +143,11 @@ public class ContaController {
 		return new ResponseEntity<>("Conta desativada com sucesso", HttpStatus.OK);
 
 	}
-	
+
+	/**
+	 * @param number
+	 * @return
+	 */
 	@ApiOperation(value = "Ativa a conta")
 	@RequestMapping(value = "/v1/activate-account", method = RequestMethod.GET)
 	public ResponseEntity<?> activateAccount(@Valid @RequestParam String number) {
@@ -167,12 +157,39 @@ public class ContaController {
 
 	}
 
-	@ApiOperation(value = "Apaga a conta")
+	/**
+	 * @param number
+	 * @return
+	 */
+	@ApiOperation(value = "Apaga a conta e o cliente")
 	@RequestMapping(value = "/v1/delete-account", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteAccount(@Valid @RequestParam String number) {
 
 		contaService.delete(number);
 		return new ResponseEntity<>("Conta deletada com sucesso", HttpStatus.OK);
+
+	}
+
+	/**
+	 * @return
+	 */
+	@ApiOperation(value = "Obtém todas as contas")
+	@RequestMapping(value = "/v1/all-accounts", method = RequestMethod.GET)
+	public ResponseEntity<List<ContaDTO>> findALL() {
+
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+		List<ContaDTO> listDto = new ArrayList<ContaDTO>();
+		List<Conta> list = contaService.findALL();
+		for (Conta conta : list) {
+
+			ContaDTO contaDTO = modelMapper.map(conta, ContaDTO.class);
+			listDto.add(contaDTO);
+
+		}
+
+		return ResponseEntity.ok().body(listDto);
 
 	}
 

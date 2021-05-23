@@ -2,6 +2,7 @@ package com.donus.challenge.api.account.management.service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -55,7 +56,7 @@ public class ContaService {
 	public void saveAccountUser(ClienteDTO clienteDTO, ContaDTO contaDTO) {
 
 		if (!DataValidator.isCPF(clienteDTO.getCpf()))
-			throw new InvalidDataException("CPF inválido");
+			throw new InvalidDataException("CPF inválido. Exemplo de formato aceito: xxxxxxxxxxx");
 
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -106,7 +107,7 @@ public class ContaService {
 		}
 
 		if (!DataValidator.validateValue(transacao.getValor())) {
-			throw new InvalidDataException("Valor inválido");
+			throw new InvalidDataException("Valor inválido. Valor limite: R$2.000");
 		}
 
 		BigDecimal destinationAccountSum = conta.getSaldo().add(transacao.getValor());
@@ -123,7 +124,7 @@ public class ContaService {
 	public void transfer(String sourceNumber, String destinationNumber, TransacaoDTO transacaoDTO) {
 
 		if (!DataValidator.validateValueNegative(transacaoDTO.getValor())) {
-			throw new InvalidDataException("Valor inválido");
+			throw new InvalidDataException("Valor inválido. Não aceitamos valores negativos.");
 		}
 
 		ModelMapper modelMapper = new ModelMapper();
@@ -275,6 +276,14 @@ public class ContaService {
 
 		contaRepository.delete(conta);
 
+	}
+	
+	/**
+	 * @return
+	 */
+	@Transactional
+	public List<Conta> findALL() {
+		return contaRepository.findAll();
 	}
 
 }
