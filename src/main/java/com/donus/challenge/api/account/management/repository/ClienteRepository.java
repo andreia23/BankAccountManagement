@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import com.donus.challenge.api.account.management.model.entity.Cliente;
 
+/**
+ * @author andreia
+ *
+ */
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 

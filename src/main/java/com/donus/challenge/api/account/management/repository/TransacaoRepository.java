@@ -5,6 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.donus.challenge.api.account.management.model.entity.Transacao;
 
+/**
+ * @author andreia
+ *
+ */
 @Repository
 public interface TransacaoRepository extends JpaRepository<Transacao, Integer> {
 

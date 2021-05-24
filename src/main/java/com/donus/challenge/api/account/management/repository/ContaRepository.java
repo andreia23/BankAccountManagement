@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import com.donus.challenge.api.account.management.model.entity.Conta;
 
+/**
+ * @author andreia
+ *
+ */
 @Repository
 public interface ContaRepository extends JpaRepository<Conta, Integer> {
 
