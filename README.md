@@ -61,9 +61,13 @@ Você também pode usar o seguinte comando para executar a apilicação:
 
 		java -jar ./target/BankAccountManagement-1.0.0.jar
 
+## Testes
 
+Os testes com JUnit estão em /src/test/java/controller
 
+## Interagindo com a API
 
+A interação com a API pode ser feita através da interface do Swagger.
 
 
 
